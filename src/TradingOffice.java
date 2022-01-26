@@ -33,10 +33,27 @@ public class TradingOffice {
     }
         Excel.close();
         System.out.println("Enter the date in this format YYYY-MM-DD:");
-    String User_date = kb.next();
+        String User_date = kb.next();
         if (Data.contains(User_date))
             System.out.println("The closing price of the date "+User_date+" is "+Close.get(Data.indexOf(User_date)));
         else
-                System.out.println("the date is not exist");
+                System.out.println("the date does not exist");
+
+        ArrayList<Double> EMAs = EMA(AdjClose,50.0,2.0,0.0);
+        while (!EMAs.isEmpty()){
+            System.out.println(EMAs.remove(0));
+        }
 }
+    public Double SMA(){
+            return 0.0;
+    }
+    public static ArrayList<Double> EMA(ArrayList<Double> Values, Double days, Double Smoothing, Double PreEMA){
+        ArrayList<Double> EMA = new ArrayList<>();
+        while (!Values.isEmpty()){
+            Double value = Values.remove(0)*(Smoothing/(1+days));
+            EMA.add(Values.remove(0)*(Smoothing/(1+days))+PreEMA*(1-(Smoothing/(1+days))));
+            PreEMA = EMA.get(EMA.size()-1);
+        }
+        return EMA;
+    }
 }

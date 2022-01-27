@@ -32,20 +32,43 @@ public class TradingOffice {
 
     }
         Excel.close();
-        System.out.println("Enter the date in this format YYYY-MM-DD:");
-        String User_date = kb.next();
-        if (Data.contains(User_date))
-            System.out.println("The closing price of the date "+User_date+" is "+Close.get(Data.indexOf(User_date)));
-        else
-                System.out.println("the date does not exist");
+        Boolean exit = false;
+        int Choose ;
+        Double days;
 
-        //ArrayList<Double> EMAs = EMA(AdjClose,50.0,2.0,0.0);
-        /*while (!EMAs.isEmpty()){
-            System.out.println(EMAs.remove(0));
-        }*/
-        ArrayList<Double> SMAs = SMA(new ArrayList<>(),10.0,AdjClose);
-        while (!SMAs.isEmpty()){
-            System.out.println(SMAs.remove(0));
+        while (!exit){
+
+            ArrayList<Double> AdjClose2 = (ArrayList<Double>) AdjClose.clone();
+
+            System.out.print("For the price of specific day enter 1 for SMA enter 2 For EMA enter 3 for exit enter 4: ");
+            Choose = kb.nextInt();
+
+            if (Choose==1){
+                System.out.print("Enter the date in this format YYYY-MM-DD:");
+                String User_date = kb.next();
+                if (Data.contains(User_date))
+                    System.out.println("The closing price of the date "+User_date+" is "+Close.get(Data.indexOf(User_date)));
+                else
+                    System.out.println("the date does not exist");
+            }
+            else if (Choose==2){
+                System.out.print("Enter the number of days:");
+                days = kb.nextDouble();
+                ArrayList<Double> SMAs = SMA(new ArrayList<>(),days,AdjClose2);
+                while (!SMAs.isEmpty()){
+                    System.out.println(SMAs.remove(0));
+                }
+            }
+            else if (Choose==3){
+                System.out.print("Enter the number of days:");
+                days = kb.nextDouble();
+                ArrayList<Double> EMAs = EMA(AdjClose2,days,2.0,0.0);
+                while (!EMAs.isEmpty()){
+                System.out.println(EMAs.remove(0));
+                }
+            }
+            else if (Choose==4)
+                exit = true;
         }
 }
     public static ArrayList<Double> SMA(ArrayList<Double> SMA, Double days, ArrayList<Double> Values){

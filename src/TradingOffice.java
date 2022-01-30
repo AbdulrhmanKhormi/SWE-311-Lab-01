@@ -1,5 +1,6 @@
 import java.io.File;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class TradingOffice {
@@ -46,18 +47,21 @@ public class TradingOffice {
     Excel2.close();
 
     Boolean exit = false;
-    int Choose ;
-    Double days;
 
     while (!exit){
-
+        int Choose = 0;
+        Double days = -1.0;
         ArrayList<Double> AdjClose2 = (ArrayList<Double>) AdjClose.clone();
 
         //giving the user to choose form SMA and EMA with specific number of days
         //and the price of specific day
 
         System.out.print("For the price of specific day enter 1 for SMA enter 2 For EMA enter 3 for exit enter 4: ");
-        Choose = kb.nextInt();
+        try {
+            Choose = Integer.parseInt(kb.next());
+        }catch (NumberFormatException e){
+            System.out.println("Error pleas enter an Integer");
+        }
 
         if (Choose==1){
             System.out.print("Enter the date in this format YYYY-MM-DD:");
@@ -69,18 +73,30 @@ public class TradingOffice {
         }
         else if (Choose==2){
             System.out.print("Enter the number of days:");
-            days = kb.nextDouble();
-            ArrayList<Double> SMAs = SMA(new ArrayList<>(),days,AdjClose2);
-            while (!SMAs.isEmpty()){
-                System.out.println(SMAs.remove(0));
+            try {
+                days = Double.valueOf(kb.next());
+            }catch (NumberFormatException e){
+                System.out.println("Error pleas enter an Integer");
+            }
+            if (days!=-1){
+                ArrayList<Double> SMAs = SMA(new ArrayList<>(),days,AdjClose2);
+                while (!SMAs.isEmpty()){
+                    System.out.println(SMAs.remove(0));
+                }
             }
         }
         else if (Choose==3){
             System.out.print("Enter the number of days:");
-            days = kb.nextDouble();
-            ArrayList<Double> EMAs = EMA(AdjClose2,Date,days,Dividends,Dividends_Data,0.0);
-            while (!EMAs.isEmpty()){
-            System.out.println(EMAs.remove(0));
+            try {
+                days = Double.valueOf(kb.next());
+            }catch (NumberFormatException e){
+                System.out.println("Error pleas enter an Integer");
+            }
+            if (days!=-1){
+                ArrayList<Double> EMAs = EMA(AdjClose2,Date,days,Dividends,Dividends_Data,0.0);
+                while (!EMAs.isEmpty()){
+                    System.out.println(EMAs.remove(0));
+                }
             }
         }
         else if (Choose==4)
